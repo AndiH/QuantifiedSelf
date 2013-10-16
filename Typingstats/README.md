@@ -16,6 +16,6 @@ In the numbers file, there's also a match between `keyID` and the name of the ke
 
 ## Todos
 
-  [ ] Fix sqlite3 plugin for Python or write something in PHP to extract the database to `csv`
-  [ ] Make automatical match between name of key and `keyID`
-  [ ] Extract different, more interesting information
+  * Fix sqlite3 plugin for Python or write something in PHP to extract the database to `csv`
+  * Make automatical match between name of key and `keyID`
+  * Extract different, more interesting information
