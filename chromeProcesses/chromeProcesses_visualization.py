@@ -28,6 +28,8 @@ data = np.loadtxt(inputFileName, delimiter=";")
 notActuallyChromeTabs = 15
 data[:,1] = [x - notActuallyChromeTabs for x in data[:,1]]
 
+print "In average, you have open", np.average(data[:,1]), "Chrome tabs."
+
 
 # create a list with the x ticks, which should be printed
 startDate = data[:,0][0]
