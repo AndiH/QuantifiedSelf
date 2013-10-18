@@ -17,5 +17,9 @@ Since I needed to learn Python (more properly) for that I was hooked after the f
   I didn't end up using this script. It was intended to reduce the amount of data to a Excel-processable amount.
   * `chromeProcesses_visualization.py` — The **heart of this project**.  
   It imports the csv data, prints it as a scatter plot (by means of prettyprintplot (olgabot/prettyplotlib) and mathplotlib) and adds a linear regression.  
-  During plotting of these points, the number of Chrome processes are converted to tabs by reducing them by a factor of **15**, which empirically seems to be the amount of Chrome helper processes.
+  During plotting of these points, the number of Chrome processes are converted to tabs by reducing them by a factor of **15**, which empirically seems to be the amount of Chrome helper processes.  
+  Call it with  
+  ```python
+  python chromeProcesses_visualization.py chromeProcesses_converted.csv
+  ```  
   * `chromeProcesses_converted.csv` — The csv file with open Chrome processes, for reference.
