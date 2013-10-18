@@ -1,3 +1,8 @@
+############################
+# File converts human readable timestamps into epoch unix timestamps in a csv file with two rows (can easily be changed, though).
+# A. Herten 18.10.2013
+############################
+
 import datetime, calendar, csv, sys
 
 inputFileName = sys.argv[1]

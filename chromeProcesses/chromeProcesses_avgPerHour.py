@@ -1,3 +1,8 @@
+############################
+# File processes a csv of epoch time stamps and number of chrome tabs. It combines all values noted for one hour to their mean value and writes the result into a new file. It's kind of rebin/zoom out.
+# A. Herten 18.10.2013
+############################
+
 import datetime, calendar, csv, sys
 
 inputFileName = sys.argv[1]
@@ -27,7 +32,7 @@ for row in reader:
 		lastHour = currentHour
 		lastMinute = currentMinute
 		counter += 1
-	# print currentYear, currentMonth, currentDay, currentHour, currentMinute, int(row[1])
+	# print timestamp, currentYear, currentMonth, currentDay, currentHour, currentMinute, int(row[1])
 	if ((currentYear == lastYear) and (currentMonth == lastMonth) and (currentDay == lastDay) and (currentHour == lastHour)):
 		numberOfOccurencesInThisHour += 1
 		numberOfProcesses += int(row[1])
