@@ -1,10 +1,16 @@
-import csv
+# reads in raw csv with key presses per timestamp and converts it into a heatmap (presses per key) for a given timespan
+
+import csv, sys
 # import datetime
 
+inputFileName = sys.argv[1] # keyPresses.csv
+
+# outputFileName = inputFileName[:-4] + '_processed.csv'
 outputfileName = 'keyPresses_Heatmap.csv'
 outputfile = open(outputfileName, 'wb')
 writer = csv.writer(outputfile, delimiter=";") # semicolon because of stupid German localization of Numbers.app
-with open('keyPresses.csv', 'rb') as inputfile:
+
+with open(inputFileName, 'rb') as inputfile:
 	reader = csv.reader(inputfile)
 	startingDate = 1377986400
 	endingDate = 1380492000
