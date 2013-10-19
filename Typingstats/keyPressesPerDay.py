@@ -1,5 +1,6 @@
-import csv
-import datetime
+# read in a Typingstats exported csv file of its keyPresses table and combines all presses of one day. The result ist printed into a new csv file with a human readable date as first cell.
+
+import csv, datetime
 
 rownum = 0
 keystrokes = int(0)
