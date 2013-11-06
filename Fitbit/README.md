@@ -1,6 +1,6 @@
 # Quantified Self: Liberate Fitbit data
 
-These Python scripts connectes to the Fitbit API, retrieves yesterdays data and saves it into a sqlite database.
+This Python script connects to the Fitbit API, retrieves yesterdays data and saves it into a sqlite database.
 
 It's work in progress and at the date of writing this readme just a proof on concept.
 
