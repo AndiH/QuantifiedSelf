@@ -17,7 +17,19 @@ class updateFitbitDb(object):
 		activity = fbApiConnection.activities(theDate)
 		formattedActivity = json.dumps(activity)
 		data = json.loads(formattedActivity)
-		formattedDataArray = (theDate.strftime("%s"), data["summary"]["elevation"], data["summary"]["sedentaryMinutes"], data["summary"]["lightlyActiveMinutes"], data["summary"]["caloriesOut"], data["summary"]["caloriesBMR"], data["summary"]["marginalCalories"], data["summary"]["fairlyActiveMinutes"], data["summary"]["veryActiveMinutes"], data["summary"]["activityCalories"], data["summary"]["steps"], data["summary"]["floors"], data["summary"]["activeScore"])
+		formattedDataArray = (theDate.strftime("%s"), 
+			data["summary"]["elevation"], 
+			data["summary"]["sedentaryMinutes"], 
+			data["summary"]["lightlyActiveMinutes"], 
+			data["summary"]["caloriesOut"], 
+			data["summary"]["caloriesBMR"], 
+			data["summary"]["marginalCalories"], 
+			data["summary"]["fairlyActiveMinutes"], 
+			data["summary"]["veryActiveMinutes"], 
+			data["summary"]["activityCalories"], 
+			data["summary"]["steps"], 
+			data["summary"]["floors"], 
+			data["summary"]["activeScore"])
 
 		dbConnection = sql.connect(self.sqlFile)
 		with dbConnection:
