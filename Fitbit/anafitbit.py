@@ -10,6 +10,9 @@ userkey = keys.ukey
 usersecret = keys.usecret
 
 yesterday = datetime.date.today() - datetime.timedelta(days=1)
+history = []
+for i in range(2, 10):
+	history.append(datetime.date.today() - datetime.timedelta(days=i))
 
 fbApiConnection = fitbit.Fitbit(consumerkey, consumersecret, user_key=userkey, user_secret=usersecret)
 

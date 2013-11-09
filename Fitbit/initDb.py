@@ -17,7 +17,7 @@ def main(argv):
 		dbCursor = dbConnection.cursor()
 		if (force):
 			dbCursor.execute("drop table if exists fitbitdata")
-		dbCursor.execute("create table fitbitdata (date INT, elevation REAL, sedentaryMinutes INT, lightlyActiveMinutes INT, caloriesOut INT, caloriesBMR INT, marginalCalories INT, fairlyActiveMinutes INT, veryActiveMinutes INT, activityCalories INT, steps INT, floors INT, activeScore INT)")
+		dbCursor.execute("create table fitbitdata (date INT PRIMARY KEY, elevation REAL, sedentaryMinutes INT, lightlyActiveMinutes INT, caloriesOut INT, caloriesBMR INT, marginalCalories INT, fairlyActiveMinutes INT, veryActiveMinutes INT, activityCalories INT, steps INT, floors INT, activeScore INT)")
 
 
 
