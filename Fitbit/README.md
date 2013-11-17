@@ -9,6 +9,8 @@ It's work in progress and subject to a lot of changes. Also, I'm too lazy to upl
 ## Files
   * `initDb.py` — Initializes the database file. Use flag `-f` to force a `drop table` before creating the table skeleton. For flushing your database.
   * `updateFitbitDb.py` — Provides a class to connect to the Fitbit API (by means of Python's Fitbit package) and retrieve the data of a given day into a SQLite3 database.
-  * `anafitbit.py` — Uses `updateFitbitDb.py` to retrieve the last 10 days of Fitbit data.
   * `keys.dummy.py` — Dummy twin file to my real `keys.py` to show you how the file has to look like. Your's should probably contain less `A`s…
+  * `anafitbit.py` — Uses `updateFitbitDb.py` to retrieve the last 10 days of Fitbit data.
+  * `fbHist.py` — Updates a table with historical Fitbit data. Check -h for parameters. Minimal parameters: One argument for a month of 2013 to retrieve completely, e.g. `python fbHist.py 10`. *Note Fitbit API rate limits (150 call/hour)*
+  * `printTable.py` — Prints * from a SQLite3 table. Check -h for parameters.
   * `site/index.php` — The file powering http://quantified.andreasherten.de/. Quite messy and needs to be tidied up. To do. Also, all external files are not commited. It should just show you have the website is generated.
