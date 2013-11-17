@@ -5,9 +5,10 @@ import datetime
 
 class updateFitbitDb(object):
 	""" Class to retrieve your Fitbit information and save it into a sqlite3 db."""
-	def __init__(self, keyFile, sqlFile=None):
+	def __init__(self, keyFile, sqlFile=None, tableName="fitbitdata"):
 		self.keyFile = keyFile
 		self.sqlFile = sqlFile
+		self.tableName = tableName
 	def printKeys(self):
 		""" Prints your key (costumer and user) strings """
 		print self.keyFile.ckey, self.keyFile.csecret, self.keyFile.ukey, self.keyFile.usecret
@@ -34,5 +35,6 @@ class updateFitbitDb(object):
 		dbConnection = sql.connect(self.sqlFile)
 		with dbConnection:
 			dbCursor = dbConnection.cursor()
-			dbCursor.execute('INSERT OR REPLACE INTO fitbitdata VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)', formattedDataArray) 
+			selectString = "INSERT OR REPLACE INTO " + self.tableName
+			dbCursor.execute(selectString + ' VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)', formattedDataArray) 
 			
