@@ -9,13 +9,13 @@ class updateFitbitDb(object):
 		self.keyFile = keyFile
 		self.sqlFile = sqlFile
 		self.tableName = tableName
+		self.fbApiConnection = fitbit.Fitbit(self.keyFile.ckey, self.keyFile.csecret, user_key=self.keyFile.ukey, user_secret=self.keyFile.usecret)
 	def printKeys(self):
 		""" Prints your key (costumer and user) strings """
 		print self.keyFile.ckey, self.keyFile.csecret, self.keyFile.ukey, self.keyFile.usecret
 	def updateDate(self, theDate):
 		""" Main function of this class. Retrieves theDate date's Fitbit data and inserts it into sqlFile sqlite3 db. If a date already exists the data is updated. """
-		fbApiConnection = fitbit.Fitbit(self.keyFile.ckey, self.keyFile.csecret, user_key=self.keyFile.ukey, user_secret=self.keyFile.usecret)
-		activity = fbApiConnection.activities(theDate)
+		activity = self.fbApiConnection.activities(theDate)
 		formattedActivity = json.dumps(activity)
 		data = json.loads(formattedActivity)
 		formattedDataArray = (theDate.strftime("%s"), 
