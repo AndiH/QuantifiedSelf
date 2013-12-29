@@ -4,7 +4,7 @@ These Python scripts transfer the data stored in your local [Whatpulse](http://w
 
 `updateSqlDbWithWhatpulseInfo.py` is run every hour on my local machine to push data into a remote MySQL database. The result is then displayed on a website.
 
-For the time being, displayed the temporary testing site [quantified.andreasherten.de/keys.php](quantified.andreasherten.de/keys.php).
+For the time being, displayed the temporary testing site [quantified.andreasherten.de/keys.php](http://quantified.andreasherten.de/keys.php).
 
 ## Files
   * `readFromWhatPulseDb.py` — Provides a class to read the data (key presses, mouse clicks) from Whatpulse's SQLite 3 database. `returnData()` returns a list of (data, keypresses, mouseclicks). If called directly from the shell, `readFromWhatPulseDb.py` displays the content of Whatpulse's database (`printData()` method).
