@@ -2,7 +2,7 @@
 import oursql
 
 class writeToMySqlDb(object):
-	"""docstring for writeToMySqlDb"""
+	"""Writes a 3-element array into a MySQL db using oursql"""
 	def __init__(self, keyFile, tableName = "Computerinput"):
 		super(writeToMySqlDb, self).__init__()
 
@@ -23,4 +23,4 @@ class writeToMySqlDb(object):
 	def readFromDb(self):
 		self.cur.execute('SELECT * from ' + self.tableName) #+ ' ORDER BY Date')
 		for row in self.cur.fetchall():
-			print row, row[0]
+			print row
