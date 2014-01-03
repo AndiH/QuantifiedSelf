@@ -27,7 +27,7 @@ Run `git hooks --installglobal` to install the hook for all future repos. Run `g
   * Take care of the absolute directories in the files. They are ugly. (Maybe this can be easier done when first taking care of merging the shell script into the Python one.)
   * Write a cronjob / launchctl script to transfer data to remote MySQL db from different computers used for coding
 
-## Known Limmits
+## Known Limits
   * This will only work locally and only for the last commit
     * Pull requests, website edits, whatnots will not be covered in the database (they shouldn't, though, if I'm not the author…)
     * A **TODO** would be to check not only for the last commit but for the last 20 commits and, if necessary, update the database accordingly. If above Todos are done, this souldn't be a problem. Additional todo coming out of this one: Include the other name into the scripts to match against.
