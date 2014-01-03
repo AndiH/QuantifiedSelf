@@ -1,4 +1,12 @@
 <?php
+date_default_timezone_set('Europe/Berlin');
+$yesterday = strtotime("yesterday");
+$readableYesterday = date("d. M. Y", $yesterday);
+
+require_once('config.inc.php');
+
+require_once('computerinput.inc.php');
+
 class MyDB extends SQLite3
 {
 	function __construct()
@@ -14,13 +22,9 @@ if(!$db){
 		// echo "Opened database successfully\n";
 }
 
-date_default_timezone_set('Europe/Berlin');
-$yesterday = strtotime("yesterday");
-$readableYesterday = date("d.m.Y", $yesterday);
-
 /* the following 7 lines still need to be merged into the code following after that. it's redundant at the moment. */ 
 $ret = $db->query("SELECT * from fitbitdata where date = " . $yesterday );
-$lastSteps = $lastFloors = "Nope";
+$lastSteps = $lastFloors = "No";
 while($row = $ret->fetchArray(SQLITE3_ASSOC) ){
 	$lastDate = $row['date'];
 	$lastSteps =  $row['steps'];
@@ -111,11 +115,6 @@ if (getGlow($lastFloors, $goalFloors)) $glowFloors = "text-shadow: 0px 0px 20px;
 		}
 		#header, #content {
 			margin: auto;
-			position: absolute;
-			top: 0;
-			left: 0;
-			bottom: 0;
-			right: 0;
 			text-align: center;
 			padding: 20px;
 			width: 600px;
@@ -124,11 +123,14 @@ if (getGlow($lastFloors, $goalFloors)) $glowFloors = "text-shadow: 0px 0px 20px;
 			height: 200px;
 		}
 		#header {
-			top: 100px;
+			margin-top: 10px;
 			bottom: inherit;
 		}
 		span.number, h1 {
 			font-family: 'Average Sans', sans-serif;
+		}
+		span.number {
+			font-size: 3em;
 		}
 		h1 {
 			color: #7A7A7A;
@@ -138,42 +140,54 @@ if (getGlow($lastFloors, $goalFloors)) $glowFloors = "text-shadow: 0px 0px 20px;
 			opacity: 1;
 		}
 		div.steps {
-			font-size: 5em;
 			<?php if ($colorSteps) echo "color: " . $colorSteps . ";"; ?>
 			<?php if ($glowSteps) echo $glowSteps; ?>
 		}
 		div.stairs {
-			font-size: 3em;
 			<?php if ($colorFloors) echo "color: " . $colorFloors . ";"; ?>
 			<?php if ($glowFloors) echo $glowFloors; ?>
 		}
-		.icon-footprints:before {
-			content: "s";
+		div.keypresses, div.clicks {
+			color: #3C5079;
+		}
+		.number:before {
 			font-family: "andiliveregular";
 			position: relative;
 			font-size: 0.7em;
 			padding-right: 10px;
 			opacity: 0.6;
+			line-height: 1;
+			font-weight: normal;
+			font-style: normal;
+			-webkit-font-smoothing: antialiased;
+			-moz-osx-font-smoothing: grayscale;
 		}
-		.icon-footprints:hover:before {
+		.number:hover:before {
 			opacity: 0.8;
+		}
+		.icon-footprints:before {
+			content: "s";
 		}
 		.icon-stairs:before {
 			content: "a";
-			font-family: "andiliveregular";
-			position: relative;
-			font-size: 0.7em;
-			padding-right: 10px;
-			opacity: 0.6;
 		}
-		.icon-stairs:hover:before {
-			opacity: 0.8;
+		.icon-clicks:before {
+			content: "p";
+			padding-right: 4px;
+		}
+		.number.icon-keypresses:before {
+			font-family: FontAwesome;
+			content: "\f11c";
+			bottom: 3px;
 		}
 		.chart {
 			margin-top: 100px;
 		}
 		h1 {
 			cursor: pointer;
+		}
+		#header h1 {
+			cursor: default;
 		}
 		h1 i {
 			font-size: 0.6em;
@@ -206,10 +220,16 @@ if (getGlow($lastFloors, $goalFloors)) $glowFloors = "text-shadow: 0px 0px 20px;
 	</div>
 	<div id="content">
 		<div class="steps">
-			<span class="number icon-footprints"><?php echo $lastSteps ?></span>
+			<span class="number icon-footprints" title="<?php echo $lastSteps ?> steps walked yesterday."><?php echo $lastSteps ?></span>
 		</div>
 		<div class="stairs">
-			<span class="number icon-stairs"><?php echo $lastFloors ?></span>
+			<span class="number icon-stairs" title="<?php echo $lastFloors ?> floors climbed yesterday."><?php echo $lastFloors ?></span>
+		</div>
+		<div class="keypresses">
+			<span class="number icon-keypresses" title="<?php echo $lastKeys ?> keys pressed yesterday."><?php echo $lastKeys ?></span>
+		</div>
+		<div class="clicks">
+			<span class="number icon-clicks" title="<?php echo $lastClicks ?> clicked with my mouse yesterday."><?php echo $lastClicks ?></span>
 		</div>
 		<div class="chart">
 			<h1 id="history"><i class="fa fa-toggle-down"></i>History</h1>
@@ -218,7 +238,7 @@ if (getGlow($lastFloors, $goalFloors)) $glowFloors = "text-shadow: 0px 0px 20px;
 		<div class="about">
 			<h1><i class="fa fa-toggle-down"></i>About</h1>
 			<div class="text-about">
-				<p>The steps I walk daily are tracked by my Fitbit. This website displays the amount of steps I walked yesterday – if available, otherwise it will just print Nope. Also, there's a graph showing the distribution of walked steps of the last nine days.<br/>
+				<p>The steps I walk daily are tracked by my Fitbit. This website displays the amount of steps I walked yesterday – if available, otherwise it will just print <em>No</em>. Also, there's a graph showing the distribution of walked steps of the last nine days.<br/>
 				This project is part of my <a href="http://www.andisblog.de/?s=quantified+self">Quantified Self studies</a>.
 				</p>
 				<p>The code to this project (including Fitbit-Api→SQLite-DB in Python as well as the PHP code running what you currently see) is <a href="https://github.com/AndiH/QuantifiedSelf/tree/master/Fitbit">available at Github</a>.</p>
