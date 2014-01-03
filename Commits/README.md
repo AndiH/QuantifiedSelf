@@ -20,3 +20,13 @@ Run `git hooks --installglobal` to install the hook for all future repos. Run `g
 
 
 ## Todo
+  * Include some repo identifier into database (maybe `basename _'_git rev-parse --show-toplevel_'_`) ← remember the apostrophes
+  * Merge the shell script `updateDatabase` into the Python `updateLocalDb.py` script to call this one directly. Should be possible from git hooks perspective, I think.
+  * Include a duplicity check on the hash key value in the sql db prior to trying to update the db.
+  * Take care of the absolute directories in the files. They are ugly. (Maybe this can be easier done when first taking care of previous bullet point)
+  * Write a cronjob / launchctl script to transfer data to remote MySQL db from different computers used for coding
+
+## Known Limmits
+  * This will only work locally and only for the last commit
+    * Pull requests, website edits, whatnots will not be covered in the database (they shouldn't, though, if I'm not the author…)
+    * A **TODO** would be to check not only for the last commit but for the last 20 commits and, if necessary, update the database accordingly. If above Todos are done, this souldn't be a problem.
