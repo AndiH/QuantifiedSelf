@@ -1,0 +1,9 @@
+#!/bin/sh
+hashVal=$(git rev-parse HEAD)
+date=$(git show -s --format=%ct $hashVal)
+message=$(git log -1 --pretty=%B)
+# echo $hashVal
+# echo $date
+# echo $message
+
+exec /usr/bin/python /Users/Andi/Documents/Coding/QuantifiedSelf/Commits/updateLocalDb.py $hashVal --date=$date --message="${message}"
