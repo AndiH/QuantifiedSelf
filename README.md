@@ -1,16 +1,23 @@
 # Quantified Self Scripts
 
-Scripts for quantifying stuff from my life.
+Scripts for quantifying different stuff from my life.
 
-For a [blog post](http://www.andisblog.de/2013/08/18/quantified-self/) (German) I started looking into different quantities of my life.
+Initially, I started looking into this for a [blog post](http://www.andisblog.de/2013/08/18/quantified-self/) (in German, sorry). But since then, the project evolved and now even measures different stuff **automatically**.
 
 Examples:
 
   * Steps I walked (measured with my Fitbit)
+  * Keys I pressed (measured with a tool)
+  * …
+  
+But also (not so automatized):
+
   * Coffee I drank (measured with a tally sheet)
   * Power my flat consumed (measured with a smart metering system we got as a beta test of our local power supply company)
 
-For the second version I wanted to quantify some more different things. 
-Here are the scripts I needed while processing and interpreting the data. They are probably incomplete, as I started using a recyclable set of scripts only during the evaluation process. But I might add new, completing ones for a possible next time… 
+The different automization as well as the evaluation scripts are in the subfolders of this direcotry. Check them out for individual README descriptions.
 
-We'll see. 
+The website, displaying everything ready-to-look-at automatically is [quantified.andreasherten.de](http://quantified.andreasherten.de).
+
+
+->![Quantified Andi Icon](http://quantified.andreasherten.de/favicon.png)<-
