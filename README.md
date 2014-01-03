@@ -20,4 +20,4 @@ The different automization as well as the evaluation scripts are in the subfolde
 The website, displaying everything ready-to-look-at automatically is [quantified.andreasherten.de](http://quantified.andreasherten.de).
 
 
-->![Quantified Andi Icon](http://quantified.andreasherten.de/favicon.png)<-
+![Quantified Andi Icon](http://quantified.andreasherten.de/favicon.png)
