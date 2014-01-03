@@ -14,7 +14,7 @@ def updateDb(args):
 		date = datetime.datetime.fromtimestamp(date)
 
 	print date, hashValue, commitMessage
-	dbConnection = sql.connect('gitCommits.db')
+	dbConnection = sql.connect('/Users/Andi/Documents/Coding/QuantifiedSelf/Commits/gitCommits.db')
 	with dbConnection:
 		dbCursor = dbConnection.cursor()
 		dbCursor.execute("INSERT INTO commits VALUES (?,?,?)", (hashValue, date.strftime("%s"),commitMessage))
