@@ -1,16 +1,15 @@
 # Quantified Self: Liberate Fitbit data
 
-This Python scripts connect to the Fitbit API, retrieve the results to a given date and save the repsonse into a SQLite 3 database.
+This Python scripts connect to the Fitbit API, retrieve the results to a given date and save the repsonse into a MySQL database. (Old version: SQLite 3 db. If you're interested in that, check backlog of this repo prior to Jan 2014.)
 
-It's the backend powering http://quantified.andreasherten.de/. The website-creating PHP file is also given in the `/site/` directory.
+It's the backend powering http://quantified.andreasherten.de/.
 
-It's work in progress and subject to a lot of changes. Also, I'm too lazy to upload all Javascript and Webfont files for `/site`, this is going to happen when I streamlined the `index.php` a bit.
+It's work in progress and subject to a lot of changes. 
 
 ## Files
-  * `initDb.py` — Initializes the database file. Use flag `-f` to force a `drop table` before creating the table skeleton. For flushing your database.
-  * `updateFitbitDb.py` — Provides a class to connect to the Fitbit API (by means of Python's Fitbit package) and retrieve the data of a given day into a SQLite3 database.
-  * `keys.dummy.py` — Dummy twin file to my real `keys.py` to show you how the file has to look like. Your's should probably contain less `A`s…
+  * `initDbMySql.py` — Initializes the database file.
+  * `updateFitbitDb.py` — Provides a class to connect to the Fitbit API (by means of Python's Fitbit package) and retrieve the data of a given day into a MySQL database.
+  * `fitbitKeys.dummy.py` — Dummy twin file to my real `fitbitKeys.py` to show you how the file has to look like. Your's should probably contain less `A`s…
   * `anafitbit.py` — Uses `updateFitbitDb.py` to retrieve the last 10 days of Fitbit data.
   * `fbHist.py` — Updates a table with historical Fitbit data. Check -h for parameters. Minimal parameters: One argument for a month of 2013 to retrieve completely, e.g. `python fbHist.py 10`. *Note Fitbit API rate limits (150 call/hour)*
-  * `printTable.py` — Prints * from a SQLite3 table. Check -h for parameters.
-  * `site/index.php` — The file powering http://quantified.andreasherten.de/. Quite messy and needs to be tidied up. To do. Also, all external files are not commited. It should just show you have the website is generated.
+  * `printTableMySql.py` — Prints * from a MySQL table. Check -h for parameters.
