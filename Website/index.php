@@ -96,12 +96,14 @@ if (getGlow($lastFloors, $goalFloors)) $glowFloors = "text-shadow: 0px 0px 20px;
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<title></title>
+	<title>quantified.andreasherten.de</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width">
 
 	<link rel="stylesheet" href="css/normalize.min.css">
 	<link rel="stylesheet" href="css/main.css">
+	<link rel="shortcut icon" href="favicon.png"> 
+	<link rel="apple-itouch-icon" href="favicon.png">
 
 	<script src="js/vendor/modernizr-2.6.2.min.js"></script>
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
@@ -229,19 +231,19 @@ if (getGlow($lastFloors, $goalFloors)) $glowFloors = "text-shadow: 0px 0px 20px;
 			<span class="number icon-keypresses" title="<?php echo $lastKeys ?> keys pressed yesterday."><?php echo $lastKeys ?></span>
 		</div>
 		<div class="clicks">
-			<span class="number icon-clicks" title="<?php echo $lastClicks ?> clicked with my mouse yesterday."><?php echo $lastClicks ?></span>
+			<span class="number icon-clicks" title="<?php echo $lastClicks ?> clicks with my mouse yesterday."><?php echo $lastClicks ?></span>
 		</div>
 		<div class="chart">
-			<h1 id="history"><i class="fa fa-toggle-down"></i>History</h1>
+			<h1 id="history"><i class="fa fa-toggle-down"></i>History (Steps)</h1>
 			 <canvas id="graph" height="250" width="600"></canvas>
 		</div>
 		<div class="about">
 			<h1><i class="fa fa-toggle-down"></i>About</h1>
 			<div class="text-about">
-				<p>The steps I walk daily are tracked by my Fitbit. This website displays the amount of steps I walked yesterday – if available, otherwise it will just print <em>No</em>. Also, there's a graph showing the distribution of walked steps of the last nine days.<br/>
+				<p>Above numbers are the steps and stairs I walked yesterday (tracked by my Fitbit), as well as the keys I pressed and the mouseclicks I made (tracked by Whatpulse). If you see a boring <em>No</em> above, probably something went wrong. The graph shows the distribution of walked steps of the last nine days.<br/>
 				This project is part of my <a href="http://www.andisblog.de/?s=quantified+self">Quantified Self studies</a>.
 				</p>
-				<p>The code to this project (including Fitbit-Api→SQLite-DB in Python as well as the PHP code running what you currently see) is <a href="https://github.com/AndiH/QuantifiedSelf/tree/master/Fitbit">available at Github</a>.</p>
+				<p>The code to this project (including Fitbit-Api→SQLite-DB in Python as well as the PHP code running what you currently see) is <a href="https://github.com/AndiH/QuantifiedSelf/tree/master/Fitbit">available at Github</a>. Check it out. There's lots of other stuff there, partly in development.</p>
 			</div>
 	</div>
 
