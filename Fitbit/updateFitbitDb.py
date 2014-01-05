@@ -1,17 +1,19 @@
 import fitbit
 import json
-# import oursql as sql
-import datetime
-from mySqlHandler import mySqlHandler
+import oursql
 
 class updateFitbitDb(object):
 	""" Class to retrieve your Fitbit information and save it into a sqlite3 db."""
-	def __init__(self, fitbitKeys, sqlKeys, tableName='Fitbit'):
+	def __init__(self, fitbitKeys, sqlInfo, tableName='Fitbit'):
 		self.fitbitKeys = fitbitKeys
-		self.sqlKeys = sqlKeys
 		self.tableName = tableName
 		self.fbApiConnection = fitbit.Fitbit(self.fitbitKeys.ckey, self.fitbitKeys.csecret, user_key=self.fitbitKeys.ukey, user_secret=self.fitbitKeys.usecret)
-		self.handler = mySqlHandler(self.sqlKeys, tableName=self.tableName)
+
+		self.db_connection = oursql.connect(host=sqlInfo.host, user=sqlInfo.user, passwd=sqlInfo.password, db=sqlInfo.database)
+		self.cur = self.db_connection.cursor()
+	def __del__(self):
+		self.cur.close()
+		self.db_connection.close()
 	def printKeys(self):
 		""" Prints your key (costumer and user) strings """
 		print self.fitbitKeys.ckey, self.fitbitKeys.csecret, self.fitbitKeys.ukey, self.fitbitKeys.usecret
@@ -35,4 +37,4 @@ class updateFitbitDb(object):
 			data["summary"]["activeScore"])
 
 		doubleData = formattedDataArray + formattedDataArray[1:]
-		self.handler.cur.execute('INSERT INTO ' + self.tableName + ' (date, elevation, sedentaryMinutes, lightlyActiveMinutes, caloriesOut, caloriesBMR, marginalCalories, fairlyActiveMinutes, veryActiveMinutes, activityCalories, steps, floors, activeScore) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)' + ' ON DUPLICATE KEY UPDATE elevation=?, sedentaryMinutes=?, lightlyActiveMinutes=?, caloriesOut=?, caloriesBMR=?, marginalCalories=?, fairlyActiveMinutes=?, veryActiveMinutes=?, activityCalories=?, steps=?, floors=?, activeScore=?', doubleData)
+		self.cur.execute('INSERT INTO ' + self.tableName + ' (date, elevation, sedentaryMinutes, lightlyActiveMinutes, caloriesOut, caloriesBMR, marginalCalories, fairlyActiveMinutes, veryActiveMinutes, activityCalories, steps, floors, activeScore) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)' + ' ON DUPLICATE KEY UPDATE elevation=?, sedentaryMinutes=?, lightlyActiveMinutes=?, caloriesOut=?, caloriesBMR=?, marginalCalories=?, fairlyActiveMinutes=?, veryActiveMinutes=?, activityCalories=?, steps=?, floors=?, activeScore=?', doubleData)

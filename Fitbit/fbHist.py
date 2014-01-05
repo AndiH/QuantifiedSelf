@@ -1,4 +1,4 @@
-import fitbitKeys, sqlKeys
+import fitbitKeys, sqlInfo
 import updateFitbitDb as updateFitbitDb
 import datetime
 import argparse
@@ -14,7 +14,7 @@ tableName = args.table
 month = args.month
 year = args.year
 
-fbUpdater = updateFitbitDb.updateFitbitDb(fitbitKeys, sqlKeys, tableName=tableName)
+fbUpdater = updateFitbitDb.updateFitbitDb(fitbitKeys, sqlInfo, tableName=tableName)
 
 listOfDates = []
 for i in range(1, cal.monthrange(year,month)[1]+1):

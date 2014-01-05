@@ -1,8 +1,8 @@
-import fitbitKeys, sqlKeys
+import fitbitKeys, sqlInfo
 import updateFitbitDb as updateFitbitDb
 import datetime
 
-fbUpdater = updateFitbitDb.updateFitbitDb(fitbitKeys, sqlKeys)
+fbUpdater = updateFitbitDb.updateFitbitDb(fitbitKeys, sqlInfo)
 
 yesterday = datetime.date.today() - datetime.timedelta(days=1)
 lastTenDays = []
