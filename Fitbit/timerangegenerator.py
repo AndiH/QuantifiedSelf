@@ -16,14 +16,14 @@ def parseString(arg):
 		lastMonday = datetime.date.today() - datetime.timedelta(days=dayOfTheWeek)
 		return [lastMonday + datetime.timedelta(days=i) for i in range(0,dayOfTheWeek)]
 	elif ("yesterday" == arg.string):
-		return datetime.date.today() - datetime.timedelta(days=1)
+		return [datetime.date.today() - datetime.timedelta(days=1)]
 	elif (("last month" == arg.string) or ("lastmonth" == arg.string)):
 		dateLastMonth = datetime.date.today() + dateutil.relativedelta.relativedelta(months=-1)
 		return generateMonth(dateLastMonth.year, dateLastMonth.month)
 	elif (("this month" == arg.string) or ("thismonth" == arg.string)):
 		return generateMonth(datetime.date.today().year, datetime.date.today().month, datetime.date.today().day - 1) # -1 since today can't be retrieved (it might not be synced yet)
 	else:
-		return datetime.date.fromtimestamp(time.mktime(parsedatetime.Calendar().parse(arg.string)[0]))
+		return [datetime.date.fromtimestamp(time.mktime(parsedatetime.Calendar().parse(arg.string)[0]))]
 
 def parse():
 	parser = argparse.ArgumentParser(description='Update Fitbit data. If no arguments are given, the current day (' + datetime.date.today().strftime('%Y-%m-%d') +') is assumed.')
@@ -42,14 +42,14 @@ def parse():
 
 	if (not args.string and not args.year and not args.month and not args.day):
 		''' No arguments = today '''
-		datesToBeRequested = datetime.date(year=currentYear, month=currentMonth, day=currentDay)
+		datesToBeRequested = [datetime.date(year=currentYear, month=currentMonth, day=currentDay)]
 
 	elif (args.day and not args.string):
 		''' One single date. '''
 		singleDateDay = args.day
 		singleDateMonth = args.month if args.month else currentMonth
 		singleDateYear = args.year if args.year else currentYear
-		datesToBeRequested = datetime.date(year=singleDateYear, month=singleDateMonth, day=singleDateDay)
+		datesToBeRequested = [datetime.date(year=singleDateYear, month=singleDateMonth, day=singleDateDay)]
 
 	elif (args.month and not args.day and not args.string):
 		''' One whole month. '''
@@ -68,7 +68,7 @@ def parse():
 	else: # all parameter
 		datesToBeRequested = "Giving ALL the parameters makes no sense."
 
-	return datesToBeRequested
+	return (datesToBeRequested, args.table)
 
 if __name__ == '__main__':
 	print parse()
