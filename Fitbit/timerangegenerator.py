@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import datetime, time, calendar, dateutil.relativedelta
 import argparse
 import parsedatetime
@@ -22,6 +23,8 @@ def parseString(arg):
 		return generateMonth(dateLastMonth.year, dateLastMonth.month)
 	elif (("this month" == arg.string) or ("thismonth" == arg.string)):
 		return generateMonth(datetime.date.today().year, datetime.date.today().month, datetime.date.today().day - 1) # -1 since today can't be retrieved (it might not be synced yet)
+	elif (("last 10 days" == arg.string) or ("last10days" == arg.string)):
+		return list(reversed(list(datetime.date.today() - datetime.timedelta(days=i) for i in range(1,10))))
 	else:
 		return [datetime.date.fromtimestamp(time.mktime(parsedatetime.Calendar().parse(arg.string)[0]))]
 
@@ -71,4 +74,5 @@ def parse():
 	return (datesToBeRequested, args.table)
 
 if __name__ == '__main__':
-	print parse()
+	dates, tablename = parse()
+	print dates, tablename
