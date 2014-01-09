@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import fitbitKeys, sqlInfo
 import updateFitbitDb
 import timerangegenerator

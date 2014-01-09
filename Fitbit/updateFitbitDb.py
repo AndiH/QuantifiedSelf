@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import fitbit
 import json
 import oursql
