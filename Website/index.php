@@ -3,61 +3,11 @@ date_default_timezone_set('Europe/Berlin');
 $yesterday = strtotime("yesterday");
 $readableYesterday = date("d. M. Y", $yesterday);
 
-require_once('config.inc.php');
+require_once('inc.config.php');
+require_once('inc.mysqlconnect.php');
 
-require_once('computerinput.inc.php');
-
-class MyDB extends SQLite3
-{
-	function __construct()
-	{
-		$this->open('data/fbData.db');
-	}
-}
-
-$db = new MyDB();
-if(!$db){
-	echo $db->lastErrorMsg();
-} else {
-		// echo "Opened database successfully\n";
-}
-
-/* the following 7 lines still need to be merged into the code following after that. it's redundant at the moment. */ 
-$ret = $db->query("SELECT * from fitbitdata where date = " . $yesterday );
-$lastSteps = $lastFloors = "No";
-while($row = $ret->fetchArray(SQLITE3_ASSOC) ){
-	$lastDate = $row['date'];
-	$lastSteps =  $row['steps'];
-	$lastFloors = $row['floors'];
-}
-
-$today = strtotime('today');
-$dates = array();
-$queryString = "SELECT * from fitbitdata where ";
-$nOfHistoryDays = 10;
-for ($i = 1; $i < $nOfHistoryDays; $i++) {
-	$currentDate = strtotime('-' . $i . ' day', $today);
-	array_push($dates, $currentDate);
-	$queryString .= "(date = " . $currentDate . ") ";
-	if ($i < ($nOfHistoryDays - 1 )) $queryString .= "OR ";
-}
-
-$historySteps = $historyFloors = array();
-$historyQuery = $db->query($queryString);
-while ($row = $historyQuery->fetchArray()) {
-	$historySteps[$row['date']] = $row['steps'];
-	$historyFloors[$row['date']] = $row['floors'];
-}
-
-function convDate($d) {
-	return date("d.m", $d);
-}
-$jsonHistoryDates = json_encode(array_map("convDate", array_keys($historyFloors)));
-$jsonHistorySteps = json_encode(array_values($historySteps));
-$jsonHistoryFloors = json_encode(array_values($historyFloors));
-
-$db->close();
-
+require_once('inc.computerinput.php');
+require_once('inc.fitbit.php');
 
 /* Stuff for coloring the numbers */
 function getColor($value, $limitvalue, $color)
@@ -243,7 +193,7 @@ if (getGlow($lastFloors, $goalFloors)) $glowFloors = "text-shadow: 0px 0px 20px;
 				<p>Above numbers are the steps and stairs I walked yesterday (tracked by my Fitbit), as well as the keys I pressed and the mouseclicks I made (tracked by Whatpulse). If you see a boring <em>No</em> above, probably something went wrong. The graph shows the distribution of walked steps of the last nine days.<br/>
 				This project is part of my <a href="http://www.andisblog.de/?s=quantified+self">Quantified Self studies</a>.
 				</p>
-				<p>The code to this project (including Fitbit-Api→SQLite-DB in Python as well as the PHP code running what you currently see) is <a href="https://github.com/AndiH/QuantifiedSelf/tree/master/Fitbit">available at Github</a>. Check it out. There's lots of other stuff there, partly in development.</p>
+				<p>The code to this project (including Fitbit-Api→SQLite-DB in Python as well as the PHP code running what you currently see) is <a href="https://github.com/AndiH/QuantifiedSelf/">available at Github</a>. Check it out. There's lots of other stuff there, partly in development.</p>
 			</div>
 	</div>
 
