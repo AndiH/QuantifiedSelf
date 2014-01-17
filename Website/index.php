@@ -147,7 +147,7 @@ if (getGlow($lastFloors, $goalFloors)) $glowFloors = "text-shadow: 0px 0px 20px;
 			bottom: 4px;
 			padding-right: 4px;
 		}
-		canvas#graph {
+		#graph {
 /* 			overflow: hidden; */
 			display: none;
 			margin-bottom: 10px;
@@ -185,7 +185,7 @@ if (getGlow($lastFloors, $goalFloors)) $glowFloors = "text-shadow: 0px 0px 20px;
 		</div>
 		<div class="chart">
 			<h1 id="history"><i class="fa fa-toggle-down"></i>History (Steps)</h1>
-			 <canvas id="graph" height="250" width="600"></canvas>
+			 <div id="graph" style="min-width: 600px; height: 250px;"></div>
 		</div>
 		<div class="about">
 			<h1><i class="fa fa-toggle-down"></i>About</h1>
@@ -203,52 +203,123 @@ if (getGlow($lastFloors, $goalFloors)) $glowFloors = "text-shadow: 0px 0px 20px;
 
 	<script src="js/plugins.js"></script>
 	<script src="js/main.js"></script>
-	<script src="js/Chart.js"></script>
-	<script>
-		var chartData = {
-	 	labels : <?php echo $jsonHistoryDates ?>,
-		 	datasets : [{
-			 	fillColor : "rgba(220,220,220,0.5)",
-		        strokeColor : "rgba(220,220,220,1)",
-		        pointColor : "rgba(220,220,220,1)",
-		        pointStrokeColor : "#fff",
-		        data : <?php echo $jsonHistoryFloors ?>
-		 	},
-			{
-				fillColor : "rgba(151,187,205,0.5)",
-				strokeColor : "rgba(151,187,205,1)",
-				pointColor : "rgba(151,187,205,1)",
-				pointStrokeColor : "#fff",
-				data : <?php echo $jsonHistorySteps ?>
-			}]
-		}
-/* 		var myLine = new Chart(document.getElementById("graph").getContext("2d")).Line(chartData); */
+	
+	<script src="js/highcharts.js"></script>
+	<script src="js/modules/exporting.js"></script>
+
+	<script type="text/javascript">
+	var stepColor = '#75b1dc';
+	var floorColor = '#959cdc';
+	var chartData = {
+        chart: {
+        	type: 'spline',
+            zoomType: 'x',
+            spacingRight: 20
+        },
+        title: {
+/*                 text: 'Steps Walked' */
+			text: null
+        },
+/*
+        subtitle: {
+            text: 'During last nine days. Also: Floors.'
+        },
+*/
+        xAxis: {
+            categories: <?php echo $jsonHistoryDates ?>,
+        },
+        yAxis: [{
+            title: {
+                text: '# Steps',
+                style: {
+                	color: stepColor
+                }
+            },
+            labels: {
+	            style: {
+		            color: stepColor
+	            }
+            },
+            min: 0,
+            gridLineColor: '#eeeeee',
+            gridLineWidth: 1
+        }, {
+            title: {
+	            text: '# Floors',
+	            style: {
+		            color: floorColor
+	            }
+            },
+            labels: {
+	            style: {
+		            color: floorColor
+	            }
+            },
+            opposite: true,
+            min: 0,
+            gridLineWidth: null
+        }],
+        tooltip: {
+            enabled: true,
+        },
+		plotOptions: {
+			spline: {
+				marker: {
+					lineColor: '#FFFFFF',
+                    lineWidth: 1,
+				}
+			}
+		},
+        series: [{
+        	yAxis: 0,
+            name: 'Steps',
+            data: <?php echo $jsonHistorySteps ?>,
+            color: stepColor
+        }, {
+        	yAxis: 1,
+            name: 'Floors',
+            data: <?php echo $jsonHistoryFloors ?>,
+            color: floorColor
+        }],
+        
+        navigation: {
+            buttonOptions: {
+                symbolStroke: '#EEE'
+            }
+        },
+        legend: {
+	        borderColor: null
+        },
+        credits: {
+            enabled: false
+        }
+    };
 		
-		var firstRun = true;
-		$(".chart #history").click(function() {
-			if (firstRun) {
-				var myLine = new Chart($("#graph").get(0).getContext("2d")).Line(chartData);
-				firstRun = false;
-			} 
-			$("canvas").toggle("blind");
-			$('html, body').animate({ 
-					scrollTop: $(document).height()
-				}, 
-				1400, 
-				"easeOutQuint"
-			);
-			$(".chart i").toggleClass("fa-toggle-up fa-toggle-down");
-		});
-		$(".about h1").click(function() {
-			$(".text-about").toggle("blind");
-			$('html, body').animate({
-					scrollTop: $(document).height()
-				},
-				1400,
-				"easeOutQuint"
-			);
-			$(".about i").toggleClass("fa-toggle-up fa-toggle-down");
-		})
+	var firstRun = true;
+	$(".chart #history").click(function() {
+		if (firstRun) {
+			$('#graph').highcharts(chartData);
+			firstRun = false;
+		} 
+		$("#graph").toggle("blind");
+		$('html, body').animate({ 
+				scrollTop: $(document).height()
+			}, 
+			1400, 
+			"easeOutQuint"
+		);
+		$(".chart i").toggleClass("fa-toggle-up fa-toggle-down");
+	});
+	$(".about h1").click(function() {
+		$(".text-about").toggle("blind");
+		$('html, body').animate({
+				scrollTop: $(document).height()
+			},
+			1400,
+			"easeOutQuint"
+		);
+		$(".about i").toggleClass("fa-toggle-up fa-toggle-down");
+	})
 	</script>
 	
 </body>
