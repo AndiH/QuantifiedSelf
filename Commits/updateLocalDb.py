@@ -3,6 +3,7 @@ from socket import gethostname
 import sqlite3 as sql
 import os, sys
 import git
+import subprocess
 
 
 # The path to the local database, please adjust to your setting
@@ -33,16 +34,36 @@ def extractRepoInfo(repo, numCommits = 0):
     if author != userName or email != userEmail:
       continue
 
+    # get information about the chagned files in this commit
+    hash = commit.name_rev.split(' ')[0]
+    path = repo.git_dir[:-4]
+    p = subprocess.Popen(['git', '--git-dir='+repo.git_dir, '--work-tree='+path, 'show', '--name-status', '--oneline', hash], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    out, err = p.communicate()
+
+    # output is one long string, split it into lists
+    filesAdded = []
+    filesRemoved = []
+    filesChanged = []
+    for line in out.splitlines()[1:]:
+      fileStat = line.split('\t')
+      if fileStat[0] == 'A':
+        filesAdded.append(fileStat[1])
+      elif fileStat[0] == 'D':
+        filesRemoved.append(fileStat[1])
+      else:
+        filesChanged.append(fileStat[1])
+
+    # fill the list
     commitInfo.append({
-      'hash': commit.name_rev.split(' ')[0],
+      'hash': hash,
       'message': commit.message.encode('utf8').strip(),
       'timestamp': commit.authored_date,
-      'path': repo.git_dir[:-4],
-      'filesAdded': [],   # todo
-      'filesChanged': [], # todo
-      'filesRemoved': [], # todo
-      'linesAdded': 0,    # todo
-      'linesRemoved': 0,  # todo
+      'path': path,
+      'filesAdded': filesAdded,
+      'filesChanged': filesChanged,
+      'filesRemoved': filesRemoved,
+      'linesAdded': commit.stats.total['insertions'],
+      'linesRemoved': commit.stats.total['deletions'],
       'machine': getMachineName()
     })
 
