@@ -46,11 +46,13 @@ def extractRepoInfo(repo, numCommits = 0):
     filesChanged = []
     for line in out.splitlines()[1:]:
       fileStat = line.split('\t')
+      if len(fileStat) != 2:
+        continue
       if fileStat[0] == 'A':
         filesAdded.append(fileStat[1])
       elif fileStat[0] == 'D':
         filesRemoved.append(fileStat[1])
-      else:
+      elif fileStat[0] in ['C', 'R']:
         filesChanged.append(fileStat[1])
 
     # fill the list
