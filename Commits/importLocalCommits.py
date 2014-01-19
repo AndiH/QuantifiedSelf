@@ -1,10 +1,7 @@
-#!/usr/bin/ python
-from socket import gethostname
+#!/usr/bin/env python
 import os
-import datetime
-# import argparse
-import sqlite3 as sql
 import git
+import updateLocalDb
 
 # configuration values
 _pathToDB = '/Users/andre/Development/QuantifiedSelf/Commits/gitCommits.db'
@@ -22,67 +19,19 @@ def getLocalGitRepos():
   return listOfRepos
 
 
-def extractRepoInfo(repo):
-  commitInfo = {}
-  commits = list(repo.iter_commits())
-
-  userConf = repo.config_reader('global')
-  userName = userConf.get('user', 'name')
-  userEmail = userConf.get('user', 'email')
-  if userEmail.startswith('"') and userEmail.endswith('"'):
-    userEmail = userEmail[1:-1]
-
-  for commit in commits:
-    # check if author of commit is the same as the local user
-    author = commit.author.name.encode('utf8')
-    email = commit.author.email.encode('utf8')
-    if author != userName or email != userEmail:
-      continue
-
-    commitHash = commit.name_rev.split(' ')[0]
-    commitInfo[commitHash] = {
-      'message': commit.message.encode('utf8').strip(),
-      'date': datetime.datetime.fromtimestamp(commit.authored_date),
-      'filesAdded': [],   # todo
-      'filesChanged': [], # todo
-      'filesRemoved': [], # todo
-      'linesAdded': 0,    # todo
-      'linesRemoved': 0   # todo
-    }
-  return commitInfo
-
-
-def importLocalCommits(localGitRepos):
-  machineName = gethostname()
+if __name__ == "__main__":
   commitCounter = 0
 
-  dbConnection = sql.connect(_pathToDB)
-  with dbConnection:
-    dbCursor = dbConnection.cursor()
+  # get all local repositories (this might take a while)
+  localGitRepos = getLocalGitRepos()
 
-    for repoPath in localGitRepos:
-      repoInfo = extractRepoInfo(git.Repo(repoPath))
-      for hash, commit in repoInfo.items():
-        dbCursor.execute(
-          "INSERT OR REPLACE INTO commits VALUES (?,?,?,?,?,?,?,?,?,?)",
-          (
-            hash,
-            commit['date'].strftime("%s"),
-            commit['message'],
-            ','.join(commit['filesAdded']),
-            ','.join(commit['filesChanged']),
-            ','.join(commit['filesRemoved']),
-            commit['linesAdded'],
-            commit['linesRemoved'],
-            repoPath,
-            machineName
-          )
-        )
-      commitCounter += len(repoInfo)
+  for repoPath in localGitRepos:
+    # get the relevant infos from the repository
+    repoInfo = updateLocalDb.extractRepoInfo(git.Repo(repoPath))
+    commitCounter += len(repoInfo)
+
+    # fill everything into the database
+    updateLocalDb.fillDatabase(repoInfo)
 
   print "Added {} commits from {} repositories.".format(commitCounter, len(localGitRepos))
 
-
-if __name__ == "__main__":
-  localGitRepos = getLocalGitRepos()
-  importLocalCommits(localGitRepos)
