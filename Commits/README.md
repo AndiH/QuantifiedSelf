@@ -2,32 +2,43 @@
 
 This set of scripts create an entry in a database for every Git commit, keeping track of my coding productivity.
 
+Everything a `git commit` is invoked, an entry into my database is created with some of the commit's information. A Git hook is used for this.  
+Also, there's a script to import old Git commits.
+
+Just go through this readme from top to bottom and you're set. The paths chosen in the following examples are just some choices, feel free to use your own.
+
 
 ## Setup
 #### 1. git-hooks
 Benjamin Meyer's **`git-hooks`** are needed: [https://github.com/icefox/git-hooks](https://github.com/icefox/git-hooks)
 
-Clone this repository locally and create a symlink for the executable in `/usr/local/bin` to put it to your $PATH:
+Clone git-hooks' repository locally and create a symlink for the executable in `/usr/local/bin` to put it to your $PATH. For example like this:
 
     cd /usr/local
     git clone https://github.com/icefox/git-hooks
     ln -s /usr/local/git-hooks/git-hooks /usr/local/bin
 
-#### 2. GitPyhton module
-These scripts collect information from the Git repositories with the help of the [GitPython module](https://github.com/gitpython-developers/GitPython). To install is, simply run
+#### 2. GitPython Module
+These scripts collect information from the Git repositories with the help of the [GitPython module](https://github.com/gitpython-developers/GitPython). To install, simply run
 
     easy_install gitpython
 
-#### 3. Initialize commit scripts
+A `pip install gitpython` should also be possible, though.
+
+#### 3. Initializions for Commit Scripts
+##### Create Database
 Clone this repo to somewhere. Use `createLocalDb.py` to create an empty SQLite3 database in the current directory.
 
-Fix the absolute path in `updateLocalDb.py` (line 11) to match your setup. If you want all old commits to import into the database, run `importLocalCommits.py` -- be aware it might take a while. To specify the paths the it should search through, use the `--paths` argument like this:
+**Fix the absolute path in `updateLocalDb.py` (line 11) to match your setup**.
+
+##### Import Old Commits
+If you want all old commits to be imported into the database, run `importLocalCommits.py`. To specify the paths the script should search through, use the `--paths` argument like this:
 
     ./importLocalCommits.py --paths /path/to/repositories/ /another/path/
 
 Depending on the directories you are scanning, this might take a while.
 
-#### 4. Setup the Git hook
+#### 4. Setup the Git Hook
 Create the user directory for git hooks:
 
     mkdir -p ~/.git_hooks/post-commit/
@@ -40,7 +51,7 @@ Then, install git-hooks to run after each new commit. Run `git hooks --installgl
 
 
 ## Files
-  * `createLocalDb.py` – Setups an SQLite3 database in which every commit is stored. More precisely, three columns are created: The hash value of the current commit, it's date and the commit message. Help output:
+  * `createLocalDb.py` – Setups an SQLite3 database in which every commit is stored. Help output:
 
         usage: createLocalDb.py [-h] [--dropDB]
 
@@ -52,7 +63,7 @@ Then, install git-hooks to run after each new commit. Run `git hooks --installgl
 
   * `updateLocalDb.py` – Updates the database created by `createLocalDb.py`. It is called by Git's `post_commit` hook and puts the latest commit from the current working directory in the database. No arguments passable.
 
-  * `importLocalCommits.py` — Searches for Git repositories in the user's home directory and extracts the commits made so far. Calls functions to extract data from `updateLocalDb.py`. Only commits from the local user are considered. Help output:
+  * `importLocalCommits.py` — Searches for Git repositories in a given path (default: the user's home directory) and extracts the commits made so far. Calls functions to extract data from `updateLocalDb.py`. Only commits from the local user are considered. Help output:
 
         usage: importLocalCommits.py [-h] [--max-repos N] [--no-recursive]
                                      [--paths PATHS [PATHS ...]]
@@ -70,10 +81,8 @@ Then, install git-hooks to run after each new commit. Run `git hooks --installgl
 
 
 ## Todo
-  * Take care of the absolute directories in the files. They are ugly. (Maybe this can be easier done when first taking care of merging the shell script into the Python one.)
+  * Take care of the absolute directories in the files. They are ugly.
   * Write a cronjob / launchctl script to transfer data to remote MySQL db from different computers used for coding
 
 ## Known Limits
-  * This will only work locally
-  * Pull requests, website edits, whatnots will not be covered in the database (they shouldn't, though, if I'm not the author…)
-
+  * This will only work locally. It's intended, since I'm working with multiple computers at a time.
