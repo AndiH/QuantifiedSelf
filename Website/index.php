@@ -7,6 +7,7 @@ require_once('inc.config.php');
 require_once('inc.mysqlconnect.php');
 
 require_once('inc.computerinput.php');
+require_once('inc.lastfm.php');
 require_once('inc.fitbit.php');
 
 /* Stuff for coloring the numbers */
@@ -99,7 +100,7 @@ if (getGlow($lastFloors, $goalFloors)) $glowFloors = "text-shadow: 0px 0px 20px;
 			<?php if ($colorFloors) echo "color: " . $colorFloors . ";"; ?>
 			<?php if ($glowFloors) echo $glowFloors; ?>
 		}
-		div.keypresses, div.clicks {
+		div.keypresses, div.clicks, div.plays {
 			color: #3C5079;
 		}
 		.number:before {
@@ -128,8 +129,13 @@ if (getGlow($lastFloors, $goalFloors)) $glowFloors = "text-shadow: 0px 0px 20px;
 			padding-right: 4px;
 		}
 		.number.icon-keypresses:before {
-			font-family: FontAwesome;
+			font-family: "FontAwesome";
 			content: "\f11c";
+			bottom: 3px;
+		}
+		.number.icon-plays:before {
+			font-family: "FontAwesome";
+			content: "\f001";
 			bottom: 3px;
 		}
 		.chart {
@@ -182,6 +188,9 @@ if (getGlow($lastFloors, $goalFloors)) $glowFloors = "text-shadow: 0px 0px 20px;
 		</div>
 		<div class="clicks">
 			<span class="number icon-clicks" title="<?php echo $lastClicks ?> clicks with my mouse yesterday."><?php echo $lastClicks ?></span>
+		</div>
+		<div class="plays">
+			<span class="number icon-plays" title="<?php echo $yesterdaysPlays ?> songs listened to yesterday."><?php echo $yesterdaysPlays ?></span>
 		</div>
 		<div class="chart">
 			<h1 id="history"><i class="fa fa-toggle-down"></i>History (Steps)</h1>
