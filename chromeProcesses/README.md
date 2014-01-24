@@ -1,12 +1,15 @@
 # Quantified Self: Count Chrome Tabs
 
-These Python+Shell scripts will give you information about the amount of open Chrome tabs over time.
+These Python scripts do two things:
+  1. Record the number of open Chrome tabs and save this number to a database
+  2. Give you some visualizations of it.
 
 ## Recording Chrome Tabs
-A small shell script records the amount of Chrome processes. Since Chrome runs each tab in its own process, the amount of Chrome processes is proportional to the amount of tabs. Except for some helper processes (~15), but they are simply substracted later on (see below).
+Since Chrome runs each tab in its own process, it's easy to find out the number of tabs. There are some helper processes, though, which have to be ommitted.
 ### Files
-  * `countChrome.sh` — The shell script recording Chrome processes. The processes are added to a .csv file on my desktop. Be sure to modify the path!
-  * `com.andi.chromeCount.plist` — launchd plist file for calling `countChrome.sh` every 5 minutes. I use Lingon 3 to manage that launchd entry, but with this plist file you should be able to get the cron job done manually.
+  * `createLocalDb.py` — Small script to initialize a local SQLite3 database for the Chrome processes.
+  * `countChrome.py` — Python script to record Chrome processes. Saves into aforementioned database. Be sure to fix the absolute path to the database.
+  * `com.andi.chromeCount.plist` — launchd plist file for calling `countChrome.py` every 5 minutes. I use Lingon 3 to manage that launchd entry, but with this plist file you should be able to get the cron job done manually.
 
 ## Processing & Visualizing Tabs
 At first my plan was to create some graphs with Excel / Numbers / … from the dataset. When I imported the .csv it turned out that it had too many lines and slowed down the spreadsheet applications quite a lot. So I decided to create a small Python script which averages all entries of one hour to one single entry in a new file.  
