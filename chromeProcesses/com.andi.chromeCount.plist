@@ -11,11 +11,12 @@
 	<string>com.andi.chromeCount</string>
 	<key>ProgramArguments</key>
 	<array>
-		<string>/Users/Andi/Desktop/countChrome.sh</string>
+		<string>/usr/local/bin/python</string>
+		<string>/Users/Andi/Documents/Coding/QuantifiedSelf/chromeProcesses/countChrome.py</string>
 	</array>
 	<key>StartInterval</key>
 	<integer>300</integer>
 </dict>
 </plist>
 
-<!-- @@@@LingonWhatStart:/Users/Andi/Desktop/countChrome.sh@@@@LingonWhatEnd -->
+<!-- @@@@LingonWhatStart:/usr/local/bin/python /Users/Andi/Documents/Coding/QuantifiedSelf/chromeProcesses/countChrome.py@@@@LingonWhatEnd -->
