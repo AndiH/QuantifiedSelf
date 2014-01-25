@@ -28,4 +28,4 @@ Since I needed to learn Python (more properly) for that I was hooked after the f
   * `chromeProcesses_converted.csv` — The csv file with open Chrome processes, for reference.
   
 ### Can I Haz Picture plz?
-![image](https://raw.github.com/AndiH/QuantifiedSelf/master/chromeProcesses/chromeProcessesPerTime.png)
+![image](https://raw.github.com/AndiH/QuantifiedSelf/master/chromeProcesses/eval/processesVsTime.png)
