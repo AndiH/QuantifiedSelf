@@ -2,7 +2,7 @@
 
 This set of scripts create an entry in a database for every Git commit, keeping track of my coding productivity.
 
-Everything a `git commit` is invoked, an entry into my database is created with some of the commit's information. A Git hook is used for this.
+Everytime a `git commit` is invoked, an entry into my database is created with some of the commit's information. A Git hook is used for this.
 Also, there's a script to import old Git commits.
 
 Just go through this readme from top to bottom and you're set. The paths chosen in the following examples are just some choices, feel free to use your own.
@@ -22,7 +22,7 @@ Finally, create the user directory for git hooks:
 
     mkdir -p ~/.git_hooks/post-commit/
 
-#### 2. GitPyhton module
+#### 2. GitPython module
 These scripts collect information from the Git repositories with the help of the [GitPython module](https://github.com/gitpython-developers/GitPython). To install, simply run
 
     easy_install gitpython
@@ -35,20 +35,22 @@ Clone this repo to somewhere. Use `createLocalDb.py` to create an empty SQLite3 
 **Fix the absolute path in `updateLocalDb.py` (line 11) to match your setup**.
 
 #### 4. Setup the Git hook
-Symlink the `updateLocalDb.py` from this repository into the directory created in step 2.
+Symlink the `updateLocalDb.py` from this repository into the directory created in step 1:
 
     ln -s updateLocalDb.py ~/.git_hooks/post-commit/
 
-Then, install git-hooks to run after each new commit. Run `git hooks --installglobal` to install the hook for all future repos. Run `git hooks --install` for your current working repo (and, subsequently, all other already existing repos). Alternatively, let the import script (next step) install git-hooks into found repositories. Finally, test it with `git hooks`.
+Then, install git-hooks to run after each new commit. Run `git hooks --installglobal` to install the hook for all future repos. Run `git hooks --install` for your current working repo (and, subsequently, all other already existing repos).  
+Alternatively, let the import script (next step) install git-hooks into found repositories. Finally, test it with `git hooks`.
 
-#### 5. (optional) Import old commits and install Git Hooks
-If you want all old commits to import into the database, run `importLocalCommits.py` -- be aware it might take a while. To specify the paths the it should search through, use the `--paths` argument like this:
+#### 5. (*Optional*) Import old commits and install Git hooks
+If you want all **old commits** to be imported into the database, run the script `importLocalCommits.py` -- be aware it might take a while.  
+To specify the paths it should search through, use the `--paths` argument like this:
 
     ./importLocalCommits.py --paths /path/to/repositories/ /another/path/
 
 Depending on the directories you are scanning, this might take a while.
 
-While scanning all repositories, you can also install git-hooks by adding `--install-hooks` as a parameter for `importLocalCommits.py`.
+To install the Git hook for all Git repositories `importLocalCommits.py` has found while scanning, it offers up the option `--install-hooks` as a parameter.
 
 
 ## Files
