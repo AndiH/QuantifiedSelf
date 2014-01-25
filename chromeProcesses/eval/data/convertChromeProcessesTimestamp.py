@@ -15,7 +15,7 @@ with open(inputFileName, 'rb') as inputfile:
 	reader = csv.reader(inputfile, delimiter=';')
 	for row in reader:
 		firstCell = row[0]
-		convertedFirstCell = calendar.timegm( datetime.datetime.strptime(firstCell,"%d.%m.%Y %H:%M").utctimetuple() )
+		convertedFirstCell = calendar.timegm( datetime.datetime.strptime(firstCell,"%Y-%m-%d %H:%M:%S").utctimetuple() )
 		writer.writerow([convertedFirstCell,row[1]])
 		# print convertedFirstCell, row[1]
 print 'Used', inputFileName, 'to write', outputFileName

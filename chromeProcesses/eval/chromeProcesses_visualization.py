@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 ############################
 # File converts a cvs of time stamps and number of open chrome tabs into a scatter plot including a linear regression
 # A. Herten, 18.10.2013
@@ -13,7 +14,13 @@ from prettyplotlib import mpl # This is "import matplotlib as mpl" from the pret
 
 # small function to convert epoch time to human readable format
 def convertDate(date):
-	return datetime.datetime.fromtimestamp(date).strftime("%d.%m.%Y %H:00")
+	# return datetime.datetime.fromtimestamp(date).strftime("%d.%m.%Y %H:00")
+	return datetime.datetime.fromtimestamp(date).strftime("%d.%m.%Y")
+
+def saveAllTheFiles(fig, name):
+	fig.savefig(name + '.png', dpi=200, bbox_inches='tight')
+	fig.savefig(name + '.pdf', dpi=200, bbox_inches='tight')
+	fig.savefig(name + '.svg', dpi=200, bbox_inches='tight')
 
 # change font to Open Sans (has some kerning issues, though)
 mpl.rcParams.update({'font.family':'Open Sans'})
@@ -26,15 +33,15 @@ data = np.loadtxt(inputFileName, delimiter=";")
 
 # Not all of the recorded chrome processes are actually proper tabs, some processes are workers only. Substract them here.
 notActuallyChromeTabs = 15
-data[:,1] = [x - notActuallyChromeTabs for x in data[:,1]]
+data[:,1] = [int(x) - notActuallyChromeTabs for x in data[:,1]]
 
 print "In average, you have open", np.average(data[:,1]), "Chrome tabs."
 
 
 # create a list with the x ticks, which should be printed
 startDate = data[:,0][0]
-endDate = data[:,0][len(data[:,0])-1]
-printList = range(int(startDate), int(endDate), 500000)
+endDate = data[:,0][-1]
+printList = range(int(startDate), int(endDate), 2000000)
 
 # convert epoch times (x ticks) to human readable form
 humanName = []
@@ -60,20 +67,43 @@ ppl.plot(ax, data[:,0], fitfn(data[:,0]), label="Fit (m="+str(round(fit[0],8))+"
 ax.set_xticks(printList)
 ax.set_xticklabels(humanName);
 ax.axis('tight')
-
-# position of ticks
 ppl.legend(ax, loc=4)
+ax.set_ylim(0, 78)
 
-### BORING PART (looks exactly the same... bummer!)
-# differences = []
-# for i in data[:,1]:
-# 	differences.append(float(i) - meany[0])
-# # print differences
-# fig2 = plt.figure()
-# ax2 = fig2.add_subplot(111)
-# ppl.scatter(ax2, data[:,0], differences, label="#Differences of Mean")
+saveAllTheFiles(fig, "processesVsTime")
 
-fig.savefig('chromeProcessesPerTime.png', dpi=200)
-fig.savefig('chromeProcessesPerTime.pdf', dpi=200)
-fig.savefig('chromeProcessesPerTime.svg', dpi=200)
-plt.show()
+
+### CUT
+xMaxCut = 1390417683
+cutData = np.asarray([[x,y] for x,y in zip(data[:,0], data[:,1]) if x < xMaxCut])
+cutFig = plt.figure(figsize=(14,8))
+cutAx = cutFig.add_subplot(111)
+ppl.scatter(cutAx, cutData[:,0], cutData[:,1], label="#Tabs")
+ppl.plot(cutAx, cutData[:,0], fitfn(cutData[:,0]), label="Fit (m="+str(round(fit[0],8))+")")
+cutAx.set_xticks(printList)
+cutAx.set_xticklabels(humanName)
+cutAx.axis('tight')
+ppl.legend(cutAx, loc=4)
+cutAx.set_ylim(40, 78)
+
+saveAllTheFiles(cutFig, "processesVsTime--cut")
+
+
+### ZOOM
+xMin = 1.3851*10**9
+xMax = 1.38515*10**9
+zoomData = np.asarray([[x,y] for x,y in zip(data[:,0], data[:,1]) if x > xMin and x < xMax])
+
+zoomPrintlist = range(int(xMin), int(xMax), 8000)
+zoomHumanName = [datetime.datetime.fromtimestamp(x).strftime("%d.%m.%Y %H:%M") for x in zoomPrintlist]
+zoomFig = plt.figure(figsize=(14,8))
+zoomAx = zoomFig.add_subplot(111)
+ppl.scatter(zoomAx, zoomData[:,0], zoomData[:,1], label="#Tabs")
+zoomAx.set_xticks(zoomPrintlist)
+zoomAx.set_xticklabels(zoomHumanName)
+zoomAx.axis('tight')
+ppl.legend(zoomAx, loc=4)
+
+saveAllTheFiles(zoomFig, "processesVsTime--zoom")
+
+# plt.show()
