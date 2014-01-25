@@ -37,7 +37,7 @@ def extractRepoInfo(repo, numCommits = 0):
     # get information about the chagned files in this commit
     hash = commit.name_rev.split(' ')[0]
     path = repo.git_dir[:-4]
-    p = subprocess.Popen(['git', '--git-dir='+repo.git_dir, '--work-tree='+path, 'show', '--name-status', '--oneline', hash], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    p = subprocess.Popen(['git', '--git-dir', repo.git_dir, '--work-tree', path, 'show', '--name-status', '--oneline', hash], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     out, err = p.communicate()
 
     # output is one long string, split it into lists
@@ -115,13 +115,13 @@ def pathContainsGitRepo(path):
 
 
 if __name__ == "__main__":
-  repoPath = os.getcwd()
-  if not pathContainsGitRepo(repoPath):
+  try:
+    repo = git.Repo(os.getcwd())
+  except:
     print "No git repository in the current working directory. Please call this script from within a git repo."
     sys.exit(0)
 
-  repoInfo = extractRepoInfo(git.Repo(repoPath), 1)
+  repoInfo = extractRepoInfo(repo, 1)
   fillDatabase(repoInfo)
 
   print "Inserted commit {} into database.".format(repoInfo[0]['hash'][:10])
-
