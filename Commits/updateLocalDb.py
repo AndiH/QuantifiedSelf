@@ -115,13 +115,13 @@ def pathContainsGitRepo(path):
 
 
 if __name__ == "__main__":
-  repoPath = os.getcwd()
-  if not pathContainsGitRepo(repoPath):
+  try:
+    repo = git.Repo(os.getcwd())
+  except:
     print "No git repository in the current working directory. Please call this script from within a git repo."
     sys.exit(0)
 
-  repoInfo = extractRepoInfo(git.Repo(repoPath), 1)
+  repoInfo = extractRepoInfo(repo, 1)
   fillDatabase(repoInfo)
 
   print "Inserted commit {} into database.".format(repoInfo[0]['hash'][:10])
-
