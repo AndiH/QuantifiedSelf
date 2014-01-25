@@ -37,7 +37,7 @@ def extractRepoInfo(repo, numCommits = 0):
     # get information about the chagned files in this commit
     hash = commit.name_rev.split(' ')[0]
     path = repo.git_dir[:-4]
-    p = subprocess.Popen(['git', '--git-dir='+repo.git_dir, '--work-tree='+path, 'show', '--name-status', '--oneline', hash], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    p = subprocess.Popen(['git', '--git-dir', repo.git_dir, '--work-tree', path, 'show', '--name-status', '--oneline', hash], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     out, err = p.communicate()
 
     # output is one long string, split it into lists
