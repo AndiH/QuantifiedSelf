@@ -45,14 +45,16 @@ data = np.asarray(allImportantData)
 
 color_cycle = cycle(mpl.rcParams['axes.color_cycle'])
 
-x = data[:,0]
+x = [datetime.datetime.fromtimestamp(converted) for converted in data[:,0]]
 fig = plt.figure(figsize=(14,8))
 ax = fig.add_subplot(111)
-# fig, ax = plt.subplots()
+
 # ax.axis('tight')
+# 
 currentColor = next(color_cycle)
 _tempColor = colorsys.rgb_to_hsv(currentColor[0], currentColor[1], currentColor[2])
 currentMarkerColor = colorsys.hsv_to_rgb(_tempColor[0], _tempColor[1], _tempColor[2]/2)
+
 ppl.plot(ax, x, data[:,1], label="#Stepss", color=currentColor) 
 # ax.plot(x, data[:,1], label="#Stepss", color="b") 
 ax.set_xlabel("Date")
@@ -60,12 +62,12 @@ ax.set_ylabel("Steps", color=currentMarkerColor)
 for tick in ax.get_yticklabels():
 	tick.set_color(currentMarkerColor)
 # ppl.bar(ax, x, data[:,1], grid='y')
-startDate = x[0]
-endDate = x[-1]
-printList = range(int(startDate), int(endDate), 2000000)
-ax.set_xticks(printList)
-ax.set_xticklabels([datetime.datetime.fromtimestamp(date).strftime("%d.%m.%Y") for date in printList])
-fig.autofmt_xdate()
+# startDate = x[0]
+# endDate = x[-1]
+# printList = range(int(startDate), int(endDate), 2000000)
+# ax.set_xticks(printList)
+# ax.set_xticklabels([datetime.datetime.fromtimestamp(date).strftime("%d.%m.%Y") for date in printList])
+fig.autofmt_xdate() # tilt labels
  
 currentColor = next(color_cycle)
 _tempColor = colorsys.rgb_to_hsv(currentColor[0], currentColor[1], currentColor[2])
@@ -80,8 +82,6 @@ for tick in ax2.get_yticklabels():
 saveAllTheFiles(fig, "fitbit")
 
 ### Statistics PER WEEKDAY
-# 
-# 
 weekdaySteps = {}
 weekdayFloors = {}
 for entry in data:
@@ -123,7 +123,6 @@ saveAllTheFiles(fig2, "fitbit-per_weekday--boxplot_and_mean")
 
 
 #### Statistics per WEEK
-#
 weekSteps = {}
 for entry in data:
 	date = datetime.datetime.fromtimestamp(entry[0])
