@@ -6,10 +6,8 @@
 	<string>com.andi.commitsSync</string>
 	<key>ProgramArguments</key>
 	<array>
-		<string>cd</string>
-		<string>/Users/Andi/Documents/Coding/QuantifiedSelf/Commits;</string>
 		<string>/usr/local/bin/python</string>
-		<string>syncSqliteToMysql.py</string>
+		<string>/Users/Andi/Documents/Coding/QuantifiedSelf/Commits/syncSqliteToMysql.py</string>
 	</array>
 	<key>WatchPaths</key>
 	<array>
@@ -18,4 +16,4 @@
 </dict>
 </plist>
 
-<!-- @@@@LingonWhatStart:cd /Users/Andi/Documents/Coding/QuantifiedSelf/Commits; /usr/local/bin/python syncSqliteToMysql.py@@@@LingonWhatEnd -->
+<!-- @@@@LingonWhatStart:/usr/local/bin/python /Users/Andi/Documents/Coding/QuantifiedSelf/Commits/syncSqliteToMysql.py@@@@LingonWhatEnd -->
