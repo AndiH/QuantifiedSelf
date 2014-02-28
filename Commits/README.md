@@ -82,11 +82,13 @@ To install the Git hook for all Git repositories `importLocalCommits.py` has fou
           --paths PATHS [PATHS ...]
                                 Paths to recursively scan for Git repositories. If not
                                 specified, the user's home directory (~/) is scanned.
+  * `createRemoteDb.py` — Creates a remote table in a MySQL database, with same structure as the SQLite3 local one. Credentials are provided via a `sqlInfo.py` file.
+  * `syncSqliteToMysql.py` — Synchronizes the content of the local database with a remote one. Uses `common/sqliteToMySql.py` as an abstract updater.
+  * `com.andi.commitsSync.plist` — An example launchctl script which calls `syncSqliteToMysql.py` everytime `gitCommits.db` is updated.
 
 
 ## Todo
   * Take care of the absolute directory in updateLocalDb.py. Config file?
-  * Write a cronjob / launchctl script to transfer data to remote MySQL db from different computers used for coding
 
 ## Known Limits
   * This will only work locally. It's intended, since I'm working with multiple computers at a time.
