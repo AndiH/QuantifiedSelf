@@ -4,10 +4,13 @@
 <dict>
 	<key>Label</key>
 	<string>com.andi.commitsSync</string>
+	<key>WorkingDirectory</key>
+	<string>/Users/Andi/Documents/Coding/QuantifiedSelf/Commits/</string>
 	<key>ProgramArguments</key>
 	<array>
-		<string>/usr/local/bin/python</string>
-		<string>/Users/Andi/Documents/Coding/QuantifiedSelf/Commits/syncSqliteToMysql.py</string>
+		<string>/bin/bash</string>
+		<string>-c</string>
+		<string>/usr/local/bin/python syncSqliteToMysql.py</string>
 	</array>
 	<key>WatchPaths</key>
 	<array>
@@ -15,5 +18,3 @@
 	</array>
 </dict>
 </plist>
-
-<!-- @@@@LingonWhatStart:/usr/local/bin/python /Users/Andi/Documents/Coding/QuantifiedSelf/Commits/syncSqliteToMysql.py@@@@LingonWhatEnd -->
