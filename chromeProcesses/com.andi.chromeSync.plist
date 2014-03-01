@@ -4,14 +4,15 @@
 <dict>
 	<key>Label</key>
 	<string>com.andi.chromeSync</string>
+	<key>WorkingDirectory</key>
+	<string>/Users/Andi/Documents/Coding/QuantifiedSelf/chromeProcesses/</string>
 	<key>ProgramArguments</key>
 	<array>
-		<string>/usr/local/bin/python</string>
-		<string>/Users/Andi/Documents/Coding/QuantifiedSelf/chromeProcesses/syncSqliteToMysql.py</string>
+		<string>/bin/bash</string>
+		<string>-c</string>
+		<string>/usr/local/bin/python syncSqliteToMysql.py</string>
 	</array>
 	<key>StartInterval</key>
 	<integer>7200</integer>
 </dict>
 </plist>
-
-<!-- @@@@LingonWhatStart:/usr/local/bin/python /Users/Andi/Documents/Coding/QuantifiedSelf/chromeProcesses/syncSqliteToMysql.py@@@@LingonWhatEnd -->
