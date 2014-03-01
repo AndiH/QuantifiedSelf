@@ -7,7 +7,7 @@ import argparse
 
 class sqliteToMySql():
 	"""Will open a local SQLite3 database and synchronize the latest 50 entries with a remote MySQL database"""
-	def __init__(self, sqlite_pathToDb, sqlite_tableName, mysql_host, mysql_user, mysql_password, mysql_db, mysql_tableName, initialize = False):
+	def __init__(self, sqlite_pathToDb, sqlite_tableName, mysql_host, mysql_user, mysql_password, mysql_db, mysql_tableName, cellsToSynchronize, initialize = False):
 		self.initialize = initialize
 		self.sqlite_pathToDb = sqlite_pathToDb
 		self.sqlite_tableName = sqlite_tableName 
@@ -16,6 +16,7 @@ class sqliteToMySql():
 		self.mysql_password = mysql_password
 		self.mysql_db = mysql_db
 		self.mysql_tableName = mysql_tableName
+		self.cellsToSynchronize = cellsToSynchronize
 	def readFromSqlite(self):
 		con = None
 		rows = None
@@ -28,7 +29,6 @@ class sqliteToMySql():
 			cur.execute(selectionstring)
 			con.commit()
 			rows = cur.fetchall()
-
 
 		except sql.Error, e:
 			print "Error %s:" % e.args[0]
@@ -46,7 +46,9 @@ class sqliteToMySql():
 			for row in rows:
 				doublerow = row + row
 				# print doublerow
-				cur.execute('INSERT INTO ' + self.mysql_tableName + ' (hash, date, message, filesAdded, filesChanged, filesDeleted, linesAdded, linesDeleted, repo, pc) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)' + ' ON DUPLICATE KEY UPDATE hash=?, date=?, message=?, filesAdded=?, filesChanged=?, filesDeleted=?, linesAdded=?, linesDeleted=?, repo=?, pc=?' , doublerow)
+				executionString = 'INSERT INTO ' + self.mysql_tableName + ' (' + ', '.join(self.cellsToSynchronize) + ') VALUES ('+ ', '.join(['?' for element in self.cellsToSynchronize]) + ') ON DUPLICATE KEY UPDATE ' + '=?, '.join(self.cellsToSynchronize) + '=?'
+				# print executionString
+				cur.execute(executionString , doublerow)
 		finally:
 			if con:
 				con.close()
@@ -64,7 +66,8 @@ if __name__ == '__main__':
 	parser.add_argument('--mysql-password', type=str, help="MySQL password")
 	parser.add_argument('--mysql-db', type=str, help="MySQL database name")
 	parser.add_argument('--mysql-table', type=str, help="MySQL table name")
+	parser.add_argument('--cells', type=list, help="List of cells to synchronize")
 	args = parser.parse_args()
 
-	pusher = sqliteToMySql(args.sqlite_path, args.sqlite_table, args.mysql_host, args.mysql_user, args.mysql_password, args.mysql_db, args.mysql_table, args.initialize)
+	pusher = sqliteToMySql(args.sqlite_path, args.sqlite_table, args.mysql_host, args.mysql_user, args.mysql_password, args.mysql_db, args.mysql_table, args.cells, args.initialize)
 	pusher.main()

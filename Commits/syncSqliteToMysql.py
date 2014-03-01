@@ -18,5 +18,7 @@ mysql_db = sqlInfo.database
 mysql_tablename = "Commits"
 initialize = args.initialize
 
-syncer = sqliteToMySql.sqliteToMySql(sqlite_path, sqlite_tablename, mysql_host, mysql_user, mysql_password, mysql_db, mysql_tablename, initialize)
+cellsToSynchronize = ["hash", "date", "message", "filesAdded", "filesChanged", "filesDeleted", "linesAdded", "linesDeleted", "repo", "pc"]
+
+syncer = sqliteToMySql.sqliteToMySql(sqlite_path, sqlite_tablename, mysql_host, mysql_user, mysql_password, mysql_db, mysql_tablename, cellsToSynchronize, initialize)
 syncer.main()
