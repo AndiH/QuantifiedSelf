@@ -65,6 +65,7 @@ if (getGlow($lastFloors, $goalFloors)) $glowFloors = "text-shadow: 0px 0px 20px;
 	<style type="text/css">
 		html {
 			font-family: "Ubuntu";
+			color: #333;
 		}
 		#header, #content {
 			margin: auto;
@@ -79,6 +80,12 @@ if (getGlow($lastFloors, $goalFloors)) $glowFloors = "text-shadow: 0px 0px 20px;
 			margin-top: 10px;
 			bottom: inherit;
 		}
+		ul.quants {
+			padding: 0;
+		}
+		ul.quants li {
+			list-style: none;
+		}
 		span.number, h1 {
 			font-family: 'Average Sans', sans-serif;
 		}
@@ -92,18 +99,18 @@ if (getGlow($lastFloors, $goalFloors)) $glowFloors = "text-shadow: 0px 0px 20px;
 		h1:hover {
 			opacity: 1;
 		}
-		div.steps {
+		ul.quants .steps {
 			<?php if ($colorSteps) echo "color: " . $colorSteps . ";"; ?>
 			<?php if ($glowSteps) echo $glowSteps; ?>
 		}
-		div.stairs {
+		ul.quants .stairs {
 			<?php if ($colorFloors) echo "color: " . $colorFloors . ";"; ?>
 			<?php if ($glowFloors) echo $glowFloors; ?>
 		}
-		div.keypresses, div.clicks, div.plays {
+		ul.quants .keypresses, ul.quants .clicks, ul.quants .plays {
 			color: #3C5079;
 		}
-		.number:before {
+		ul.quants .number:before {
 			font-family: "andiliveregular";
 			position: relative;
 			font-size: 0.7em;
@@ -115,25 +122,25 @@ if (getGlow($lastFloors, $goalFloors)) $glowFloors = "text-shadow: 0px 0px 20px;
 			-webkit-font-smoothing: antialiased;
 			-moz-osx-font-smoothing: grayscale;
 		}
-		.number:hover:before {
+		ul.quants .number:hover:before {
 			opacity: 0.8;
 		}
-		.icon-footprints:before {
+		ul.quants .icon-footprints:before {
 			content: "s";
 		}
-		.icon-stairs:before {
+		ul.quants .icon-stairs:before {
 			content: "a";
 		}
-		.icon-clicks:before {
+		ul.quants .icon-clicks:before {
 			content: "p";
 			padding-right: 4px;
 		}
-		.number.icon-keypresses:before {
+		ul.quants .number.icon-keypresses:before {
 			font-family: "FontAwesome";
 			content: "\f11c";
 			bottom: 3px;
 		}
-		.number.icon-plays:before {
+		ul.quants .number.icon-plays:before {
 			font-family: "FontAwesome";
 			content: "\f001";
 			bottom: 3px;
@@ -177,21 +184,23 @@ if (getGlow($lastFloors, $goalFloors)) $glowFloors = "text-shadow: 0px 0px 20px;
 		</div>
 	</div>
 	<div id="content">
-		<div class="steps">
-			<span class="number icon-footprints" title="<?php echo $lastSteps ?> steps walked yesterday."><?php echo $lastSteps ?></span>
-		</div>
-		<div class="stairs">
-			<span class="number icon-stairs" title="<?php echo $lastFloors ?> floors climbed yesterday."><?php echo $lastFloors ?></span>
-		</div>
-		<div class="keypresses">
-			<span class="number icon-keypresses" title="<?php echo $lastKeys ?> keys pressed yesterday."><?php echo $lastKeys ?></span>
-		</div>
-		<div class="clicks">
-			<span class="number icon-clicks" title="<?php echo $lastClicks ?> clicks with my mouse yesterday."><?php echo $lastClicks ?></span>
-		</div>
-		<div class="plays">
-			<span class="number icon-plays" title="<?php echo $yesterdaysPlays ?> songs listened to yesterday."><?php echo $yesterdaysPlays ?></span>
-		</div>
+		<ul class="quants">
+			<li class="steps">
+				<span class="number icon-footprints" title="<?php echo $lastSteps ?> steps walked yesterday."><?php echo $lastSteps ?></span>
+			</li>
+			<li class="stairs">
+				<span class="number icon-stairs" title="<?php echo $lastFloors ?> floors climbed yesterday."><?php echo $lastFloors ?></span>
+			</li>
+			<li class="keypresses">
+				<span class="number icon-keypresses" title="<?php echo $lastKeys ?> keys pressed yesterday."><?php echo $lastKeys ?></span>
+			</li>
+			<li class="clicks">
+				<span class="number icon-clicks" title="<?php echo $lastClicks ?> clicks with my mouse yesterday."><?php echo $lastClicks ?></span>
+			</li>
+			<li class="plays">
+				<span class="number icon-plays" title="<?php echo $yesterdaysPlays ?> songs listened to yesterday."><?php echo $yesterdaysPlays ?></span>
+			</li>
+		</ul>
 		<div class="chart">
 			<h1 id="history"><i class="fa fa-toggle-down"></i>History (Steps)</h1>
 			 <div id="graph" style="min-width: 600px; height: 250px;"></div>
@@ -199,10 +208,11 @@ if (getGlow($lastFloors, $goalFloors)) $glowFloors = "text-shadow: 0px 0px 20px;
 		<div class="about">
 			<h1><i class="fa fa-toggle-down"></i>About</h1>
 			<div class="text-about">
-				<p>Above numbers are the steps and stairs I walked yesterday (tracked by my Fitbit), as well as the keys I pressed and the mouseclicks I made (tracked by Whatpulse). If you see a boring <em>No</em> above, probably something went wrong. The graph shows the distribution of walked steps of the last nine days.<br/>
+				<p>Above numbers are some of yesterday's quantified statistics of my life. I call them <em>Quants</em>.<br/>
+				Steps and stairs are tracked with my Fitbit, mouse clicks and key presses are tracked with Whatpulse, the songs I listened to yesterday are imported from Lastfm. If you see a boring <em>No</em> above, probably something went wrong. The graph shows the distribution of walked steps of the last nine days.<br/>
 				This project is part of my <a href="http://www.andisblog.de/?s=quantified+self">Quantified Self studies</a>.
 				</p>
-				<p>The code to this project (including Fitbit-Api→SQLite-DB in Python as well as the PHP code running what you currently see) is <a href="https://github.com/AndiH/QuantifiedSelf/">available at Github</a>. Check it out. There's lots of other stuff there, partly in development.</p>
+				<p>The code to this project (both front-end and back-end) is <a href="https://github.com/AndiH/QuantifiedSelf/">available at Github</a>. Check it out. There's lots of other stuff there, partly in development.</p>
 			</div>
 	</div>
 
